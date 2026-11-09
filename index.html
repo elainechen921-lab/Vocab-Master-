@@ -47,8 +47,9 @@ button{font-family:inherit;color:var(--tx);cursor:pointer}
 table{width:100%;border-collapse:collapse;font-size:.85rem;margin:8px 0}th,td{border:1px solid #ddd;padding:5px;text-align:center}th{background:#FFF5BA}
 .ov{position:fixed;inset:0;background:#fffdf8;display:none;align-items:center;justify-content:center;z-index:9}
 .ov>div{background:#fff;padding:22px;border-radius:14px;box-shadow:0 3px 14px #0003;width:300px;display:flex;flex-direction:column;gap:10px}
+.rb{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}.big{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:92px;border-radius:14px;padding:10px;font:700 1.15rem Poppins,sans-serif;color:var(--tx);text-decoration:none;box-shadow:0 2px 6px #0002;text-align:center}.big small{font:400 .8rem Nunito,sans-serif}.bd{border-collapse:collapse}
 .lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}.lb{display:flex;align-items:center;justify-content:center;height:72px;border-radius:14px;font:700 1.6rem Poppins,sans-serif;color:var(--tx);text-decoration:none;box-shadow:0 2px 6px #0002}
-@media(max-width:600px){.og,.rg{grid-template-columns:1fr}.mg{grid-template-columns:repeat(2,1fr)}.bx{width:34px;height:40px;font-size:1.3rem}}
+@media(max-width:600px){.rb{grid-template-columns:1fr}.og,.rg{grid-template-columns:1fr}.mg{grid-template-columns:repeat(2,1fr)}.bx{width:34px;height:40px;font-size:1.3rem}}
 </style></head><body>
 <h1>Vocabulary Master</h1>
 <div class="hd"><span>字母 <select id="ls"></select></span><span id="who"></span><button class="tb" style="min-height:30px;padding:3px 10px" onclick="relogin()">換人</button><a id="hm" class="tb" style="display:none;text-decoration:none;min-height:30px;padding:4px 10px;color:var(--tx)">🏠 字母選單</a><span id="sy"></span></div>
@@ -77,11 +78,17 @@ const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}
 const shuf=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
 let user,L=LETTER,W=[],S={},tab='study',page=0,last=null,timer=null,adminKey='';
 function speak(t,r){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=r||0.7;speechSynthesis.speak(u)}
-const key=()=>'vm:'+user.id+':'+L;
+const key=()=>'vm:'+user.id+':all';
+const ALL='ALL',isAll=()=>L===ALL;
+function migrate(){ // 把舊版「每個字母一份」的進度合併進共用進度
+ LETTERS.concat([L]).forEach(x=>{const k='vm:'+user.id+':'+x;if(k===key())return;const o=ls.get(k,null);if(!o)return;
+  Object.keys(NM).forEach(m=>{if(!o[m])return;S[m]=S[m]||{m:[],q:[],cur:null};
+   o[m].m.forEach(i=>{if(!S[m].m.includes(i))S[m].m.push(i)});(o[m].q||[]).forEach(q=>{if(!S[m].q.some(y=>y.id===q.id)&&!S[m].m.includes(q.id))S[m].q.push(q)})});
+  try{localStorage.removeItem(k)}catch(e){}})}
 function save(){ls.set(key(),S)}
 const defS=()=>{const o={};Object.keys(NM).forEach(m=>o[m]={m:[],q:[],cur:null});return o};
 const pool=m=>W.filter(x=>m!=='cloze'||x.cz).map(x=>x.id);
-const blank=x=>{if(!x.s)return null;const re=new RegExp('\\b'+x.w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i');return re.test(x.s)?x.s.replace(re,'_____'):null};
+const blank=x=>{if(!x.s)return null;const re=new RegExp('(?<![A-Za-z])'+x.w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![A-Za-z])','gi');return re.test(x.s)?x.s.replace(re,'_____'):null};
 
 /* ---------- 登入 / 載入 ---------- */
 function login(){const c=$('lc').value.trim(),t=$('lt').value.trim(),n=$('ln').value.trim();if(!c||!t||!n){alert('三個欄位都要填喔！');return}
@@ -92,14 +99,14 @@ async function loadWords(){let w=null;
  if(!w)w=ls.get('vm:w:'+L,null);
  if(!w)w=DEMO;
  W=w.map(x=>({id:String(x.id),w:String(x.w),p:x.p||'',d:String(x.d),s:x.s||'',sc:x.sc||'',u:x.u||'',c:x.c||''}));W.forEach(x=>x.cz=blank(x))}
-async function init(){$('who').textContent='👤 '+user.name;if(!PARAM){home();return}$('hm').href=location.pathname;$('hm').style.display='inline-block';await loadWords();
- S=ls.get(key(),null)||defS();Object.keys(NM).forEach(m=>{S[m]=S[m]||{m:[],q:[],cur:null}});go(tab);sync()}
+async function init(){$('who').textContent='👤 '+user.name+(isAll()?'　🎲 全字母隨機挑戰':'');if(!PARAM){home();return}$('hm').href=location.pathname;$('hm').style.display='inline-block';await loadWords();
+ S=ls.get(key(),null)||defS();Object.keys(NM).forEach(m=>{S[m]=S[m]||{m:[],q:[],cur:null}});migrate();save();go(tab);sync()}
 function go(t){tab=t;clearInterval(timer);speechSynthesis&&speechSynthesis.cancel();
  $('tabs').innerHTML=TABS.map(x=>`<button class="tb ${x[0]===t?'on':''}" onclick="go('${x[0]}')">${x[1]}</button>`).join('');
  ({study:vStudy,choice:()=>vGame('choice'),cloze:()=>vGame('cloze'),spell:()=>vGame('spell'),match:vMatch,report:vReport,teacher:vTeacher})[t]()}
 
 /* ---------- 離線紀錄與同步 ---------- */
-function rec(m,w,ok){const q=ls.get('vmq',[]);q.push({u:user.id+'|'+Date.now()+Math.random().toString(36).slice(2,6),t:Date.now(),cls:user.cls,seat:user.seat,name:user.name,letter:L,mode:m,wid:w.id,word:w.w,ok:ok?1:0});ls.set('vmq',q);sync()}
+function rec(m,w,ok){const q=ls.get('vmq',[]);q.push({u:user.id+'|'+Date.now()+Math.random().toString(36).slice(2,6),t:Date.now(),cls:user.cls,seat:user.seat,name:user.name,letter:w.id.replace(/\d+$/,''),mode:m,wid:w.id,word:w.w,ok:ok?1:0});ls.set('vmq',q);sync()}
 let syncing=false;
 async function sync(){const n=()=>ls.get('vmq',[]).length;
  const show=t=>{$('sy').textContent=t};
@@ -133,13 +140,16 @@ function cards(){const q=$('sq').value.trim().toLowerCase(),per=10;
  $('pg').innerHTML=q?`共 ${list.length} 筆`:`<button class="tb" ${page<1?'disabled':''} onclick="page--;cards();scrollTo(0,0)">◀ 上一頁</button><b>${page+1} / ${pages}</b><button class="tb" ${page>=pages-1?'disabled':''} onclick="page++;cards();scrollTo(0,0)">下一頁 ▶</button>`}
 
 /* ---------- 練習引擎（答錯停留，間隔 3 題再出現） ---------- */
-function nextId(m){const s=S[m];if(s.cur!=null&&pool(m).includes(s.cur))return s.cur;
- s.q.forEach(x=>x.cd--);const i=s.q.findIndex(x=>x.cd<=0);let id=null;
+function nextId(m){const s=S[m],P=new Set(pool(m)),M=new Set(s.m);
+ if(s.cur!=null&&P.has(s.cur)&&!M.has(s.cur))return s.cur;
+ s.q.forEach(x=>{if(P.has(x.id))x.cd--});
+ const i=s.q.findIndex(x=>P.has(x.id)&&x.cd<=0);let id=null;
  if(i>-1)id=s.q.splice(i,1)[0].id;
- else{const qi=s.q.map(x=>x.id),av=pool(m).filter(x=>!s.m.includes(x)&&!qi.includes(x)&&x!==last);
+ else{const qi=new Set(s.q.map(x=>x.id)),av=[...P].filter(x=>!M.has(x)&&!qi.has(x)&&x!==last);
   if(av.length)id=av[Math.floor(Math.random()*av.length)];
-  else if(s.q.length)id=s.q.shift().id;
-  else{const a2=pool(m).filter(x=>!s.m.includes(x));id=a2.length?a2[0]:null}}
+  else{const k=s.q.findIndex(x=>P.has(x.id));
+   if(k>-1)id=s.q.splice(k,1)[0].id;
+   else{const a2=[...P].filter(x=>!M.has(x));id=a2.length?a2[0]:null}}}
  s.cur=id;save();return id}
 function ans(m,w,ok){const s=S[m];s.cur=null;last=w.id;
  s.q=s.q.filter(x=>x.id!==w.id);
@@ -195,7 +205,12 @@ function vReport(){const bg=[4,3,0,2];let h='<h2 style="text-align:center;font-f
  Object.keys(NM).forEach((m,i)=>{const pl=pool(m),t=pl.length,mm=S[m].m.filter(x=>pl.includes(x)).length,p=t?Math.round(mm/t*100):0;
   h+=`<div class="rc" style="background:${COL[bg[i]]}"><b style="font-size:1.1rem">${NM[m]}</b><div class="ring" style="background:conic-gradient(#43a047 ${p}%,rgba(255,255,255,.85) 0)"><div class="ri">${p}%</div></div>
   <div>總單字量：<b>${t}</b></div><div class="g"><b>已掌握：${mm}</b></div><div class="r"><b>未掌握：${t-mm}</b></div></div>`});
- $('main').innerHTML=h+'</div>'}
+ h+='</div>';
+ if(isAll()){const by={};W.forEach(x=>{const l=x.id.replace(/\d+$/,'');(by[l]=by[l]||[]).push(x.id)});
+  const rows=Object.keys(by).sort().map(l=>{const ids=by[l];let a=0;Object.keys(NM).forEach(m=>{const M=new Set(S[m].m);a+=ids.filter(i=>M.has(i)&&(m!=='cloze'||W.find(x=>x.id===i).cz)).length});const p=Math.round(a/(ids.length*4)*100);
+   return `<a href="?letter=${l}" style="text-decoration:none;color:inherit;display:block;margin:3px 0"><div style="display:flex;align-items:center;gap:8px"><b style="width:28px">${l}</b><div class="bt" style="flex:1"><div class="bf" style="width:${p}%;background:${p>=100?'#43a047':'#A0E6FF'}"></div></div><span style="width:44px;text-align:right">${p}%</span></div></a>`}).join('');
+  h+='<h3 style="margin-top:18px">各字母熟練度（四種練習平均，點字母可單獨練習）</h3>'+rows}
+ $('main').innerHTML=h}
 
 /* ---------- 教師後台 ---------- */
 async function vTeacher(){const box=$('main');
@@ -214,7 +229,7 @@ async function vTeacher(){const box=$('main');
  <h3>常錯單字 Top 15</h3><table><tr><th>單字</th><th>模式</th><th>答錯次數</th></tr>${top||'<tr><td colspan=3>尚無資料</td></tr>'}</table>`}
 
 function home(){$('tabs').innerHTML='';sync();
- $('main').innerHTML='<h2 style="text-align:center;font-family:Poppins">請選擇字母</h2><div class="lg">'+LETTERS.map((x,i)=>`<a class="lb" style="background:${COL[i%6]}" href="?letter=${x}">${x}</a>`).join('')+'</div>'}
+ $('main').innerHTML='<div class="rb"><a class="big" style="background:#FFB3C6" href="?letter=ALL">🎲 全字母隨機挑戰<small>A–Z 全部單字混在一起，練到全部熟練</small></a><a class="big" style="background:#FFE66D" href="?letter='+LETTERS[Math.floor(Math.random()*LETTERS.length)]+'">🎯 隨機抽一個字母<small>不知道練哪個？讓電腦決定</small></a></div><h2 style="text-align:center;font-family:Poppins">或選擇字母</h2><div class="lg">'+LETTERS.map((x,i)=>`<a class="lb" style="background:${COL[i%6]}" href="?letter=${x}">${x}</a>`).join('')+'</div>'}
 /* ---------- 啟動 ---------- */
 {const opts=LETTERS.includes(LETTER)?LETTERS:[LETTER].concat(LETTERS);
  $('ls').innerHTML=opts.map(x=>`<option ${x===LETTER?'selected':''}>${esc(x)}</option>`).join('');
