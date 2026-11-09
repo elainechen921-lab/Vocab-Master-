@@ -47,17 +47,19 @@ button{font-family:inherit;color:var(--tx);cursor:pointer}
 table{width:100%;border-collapse:collapse;font-size:.85rem;margin:8px 0}th,td{border:1px solid #ddd;padding:5px;text-align:center}th{background:#FFF5BA}
 .ov{position:fixed;inset:0;background:#fffdf8;display:none;align-items:center;justify-content:center;z-index:9}
 .ov>div{background:#fff;padding:22px;border-radius:14px;box-shadow:0 3px 14px #0003;width:300px;display:flex;flex-direction:column;gap:10px}
+.lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}.lb{display:flex;align-items:center;justify-content:center;height:72px;border-radius:14px;font:700 1.6rem Poppins,sans-serif;color:var(--tx);text-decoration:none;box-shadow:0 2px 6px #0002}
 @media(max-width:600px){.og,.rg{grid-template-columns:1fr}.mg{grid-template-columns:repeat(2,1fr)}.bx{width:34px;height:40px;font-size:1.3rem}}
 </style></head><body>
 <h1>Vocabulary Master</h1>
-<div class="hd"><span>字母 <select id="ls"></select></span><span id="who"></span><button class="tb" style="min-height:30px;padding:3px 10px" onclick="relogin()">換人</button><span id="sy"></span></div>
+<div class="hd"><span>字母 <select id="ls"></select></span><span id="who"></span><button class="tb" style="min-height:30px;padding:3px 10px" onclick="relogin()">換人</button><a id="hm" class="tb" style="display:none;text-decoration:none;min-height:30px;padding:4px 10px;color:var(--tx)">🏠 字母選單</a><span id="sy"></span></div>
 <div class="tabs" id="tabs"></div><div id="main"></div>
 <div class="ov" id="ov"><div><b style="font:700 1.2rem Poppins">請輸入你的資料</b>
 <input id="lc" placeholder="班級（例如 801）"><input id="lt" placeholder="座號（例如 5）" inputmode="numeric"><input id="ln" placeholder="姓名">
 <button class="go" onclick="login()">開始練習</button></div></div>
 <script>
 const API='https://script.google.com/macros/s/AKfycbyun8WAI6ICJYml2WoKwvx2nVwFLSo7KhPeiNObTEzWOFOCNg7tsI3gg_J6njd2hQzw/exec';            // ← 貼上 Apps Script 網頁應用程式網址（結尾 /exec）
-const LETTER='B';        // ← 這一頁預設的字母
+const PARAM=new URLSearchParams(location.search).get('letter');  // 網址 ?letter=B 會指定字母（= 試算表工作表名稱）
+const LETTER=(PARAM||'B').trim();                                 // 沒帶參數時預設 B
 const LETTERS='ABCDEFGHIJKLMNOPQRSTUVWYZ'.split('');
 const TABS=[['study','📖 單字學習'],['choice','📝 單字選擇'],['cloze','✏️ 克漏字'],['match','🧩 配對遊戲'],['spell','⌨️ 拼字聽寫'],['report','📊 學習報告'],['teacher','🧑‍🏫 教師後台']];
 const NM={choice:'單字選擇',cloze:'克漏字',match:'配對遊戲',spell:'拼字聽寫'};
@@ -79,18 +81,18 @@ const key=()=>'vm:'+user.id+':'+L;
 function save(){ls.set(key(),S)}
 const defS=()=>{const o={};Object.keys(NM).forEach(m=>o[m]={m:[],q:[],cur:null});return o};
 const pool=m=>W.filter(x=>m!=='cloze'||x.cz).map(x=>x.id);
-const blank=x=>{if(!x.s)return null;const re=new RegExp('\\b'+x.w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\b','i');return re.test(x.s)?x.s.replace(re,'_____'):null};
+const blank=x=>{if(!x.s)return null;const re=new RegExp('(?<![A-Za-z])'+x.w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![A-Za-z])','gi');return re.test(x.s)?x.s.replace(re,'_____'):null};
 
 /* ---------- 登入 / 載入 ---------- */
 function login(){const c=$('lc').value.trim(),t=$('lt').value.trim(),n=$('ln').value.trim();if(!c||!t||!n){alert('三個欄位都要填喔！');return}
  user={cls:c,seat:t,name:n,id:c+'-'+t+'-'+n};ls.set('vm:user',user);$('ov').style.display='none';init()}
 function relogin(){$('ov').style.display='flex'}
 async function loadWords(){let w=null;
- if(API&&navigator.onLine){try{const j=await(await fetch(API+'?action=words&letter='+L)).json();if(j.ok&&j.words.length){w=j.words;ls.set('vm:w:'+L,w)}}catch(e){}}
+ if(API&&navigator.onLine){try{const j=await(await fetch(API+'?action=words&letter='+encodeURIComponent(L))).json();if(j.ok&&j.words.length){w=j.words;ls.set('vm:w:'+L,w)}}catch(e){}}
  if(!w)w=ls.get('vm:w:'+L,null);
  if(!w)w=DEMO;
  W=w.map(x=>({id:String(x.id),w:String(x.w),p:x.p||'',d:String(x.d),s:x.s||'',sc:x.sc||'',u:x.u||'',c:x.c||''}));W.forEach(x=>x.cz=blank(x))}
-async function init(){$('who').textContent='👤 '+user.name;await loadWords();
+async function init(){$('who').textContent='👤 '+user.name;if(!PARAM){home();return}$('hm').href=location.pathname;$('hm').style.display='inline-block';await loadWords();
  S=ls.get(key(),null)||defS();Object.keys(NM).forEach(m=>{S[m]=S[m]||{m:[],q:[],cur:null}});go(tab);sync()}
 function go(t){tab=t;clearInterval(timer);speechSynthesis&&speechSynthesis.cancel();
  $('tabs').innerHTML=TABS.map(x=>`<button class="tb ${x[0]===t?'on':''}" onclick="go('${x[0]}')">${x[1]}</button>`).join('');
@@ -200,7 +202,7 @@ async function vTeacher(){const box=$('main');
  if(!API){box.innerHTML='<p>尚未設定 API 網址，無法讀取後台資料。</p>';return}
  if(!adminKey)adminKey=prompt('請輸入教師密碼')||'';if(!adminKey){box.innerHTML='<p>需要教師密碼。</p>';return}
  box.innerHTML='<p>讀取中…</p>';let j;
- try{j=await(await fetch(API+'?action=admin&letter='+L+'&key='+encodeURIComponent(adminKey))).json()}catch(e){box.innerHTML='<p>讀取失敗（可能離線）。</p>';return}
+ try{j=await(await fetch(API+'?action=admin&letter='+encodeURIComponent(L)+'&key='+encodeURIComponent(adminKey))).json()}catch(e){box.innerHTML='<p>讀取失敗（可能離線）。</p>';return}
  if(!j.ok){adminKey='';box.innerHTML='<p>'+esc(j.msg||'錯誤')+'</p>';return}
  const by={},wr={};
  j.records.forEach(r=>{const id=r.cls+'-'+r.seat+'-'+r.name,o=by[id]||(by[id]={n:r.cls+' 班 '+r.seat+' 號 '+r.name,a:0,c:0,t:0,m:{choice:new Set,cloze:new Set,match:new Set,spell:new Set}});
@@ -211,8 +213,12 @@ async function vTeacher(){const box=$('main');
  box.innerHTML=`<h3>字母 ${L}：全班作業進度（已答對單字數／總數）</h3><div style="overflow-x:auto"><table><tr><th>學生</th><th>作答數</th><th>正確率</th>${Object.values(NM).map(n=>`<th>${n}</th>`).join('')}<th>最近練習</th></tr>${rows||'<tr><td colspan=8>尚無資料</td></tr>'}</table></div>
  <h3>常錯單字 Top 15</h3><table><tr><th>單字</th><th>模式</th><th>答錯次數</th></tr>${top||'<tr><td colspan=3>尚無資料</td></tr>'}</table>`}
 
+function home(){$('tabs').innerHTML='';sync();
+ $('main').innerHTML='<h2 style="text-align:center;font-family:Poppins">請選擇字母</h2><div class="lg">'+LETTERS.map((x,i)=>`<a class="lb" style="background:${COL[i%6]}" href="?letter=${x}">${x}</a>`).join('')+'</div>'}
 /* ---------- 啟動 ---------- */
-$('ls').innerHTML=LETTERS.map(x=>`<option ${x===LETTER?'selected':''}>${x}</option>`).join('');
-$('ls').onchange=e=>{L=e.target.value;page=0;init()};
+{const opts=LETTERS.includes(LETTER)?LETTERS:[LETTER].concat(LETTERS);
+ $('ls').innerHTML=opts.map(x=>`<option ${x===LETTER?'selected':''}>${esc(x)}</option>`).join('');
+ $('ls').onchange=e=>{L=e.target.value;page=0;init()};
+ $('ls').parentNode.style.display='none';}   // 網址指定字母時，學生不能自行切換
 user=ls.get('vm:user',null);if(user)init();else{$('ov').style.display='flex'}
 </script></body></html>
