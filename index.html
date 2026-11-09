@@ -3,24 +3,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 <style>
 :root{--tx:#2d3436}*{box-sizing:border-box}
+html{font-size:125%}
+.fz{display:inline-flex;align-items:center;gap:4px}.fz button{border:2px solid #A0E6FF;background:#fff;border-radius:10px;padding:2px 10px;font:700 .9rem Nunito,sans-serif}.fz button.on{background:#A0E6FF}
 body{margin:0;padding:10px;font-family:Nunito,sans-serif;color:var(--tx);background:#fffdf8}
 h1{font-family:Poppins,sans-serif;text-align:center;margin:4px 0;font-size:1.7rem;background:linear-gradient(90deg,#3a9bd0,#e0638f,#d99a1e);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hd{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;font-size:.9rem}
 select,input{font:inherit;padding:6px 8px;border:2px solid #A0E6FF;border-radius:10px;color:var(--tx)}
 button{font-family:inherit;color:var(--tx);cursor:pointer}
 .tabs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}
-.tb{border:2px solid #A0E6FF;background:#fff;border-radius:18px;padding:8px 12px;font:700 .85rem Poppins,sans-serif;min-height:40px}
+.tb{cursor:pointer;border:2px solid #A0E6FF;background:#fff;border-radius:18px;padding:8px 12px;font:700 .85rem Poppins,sans-serif;min-height:2.5rem}
 .tb.on{background:#A0E6FF}
 #main{max-width:900px;margin:auto;background:#fff;border-radius:14px;padding:14px;box-shadow:0 3px 10px #0001;min-height:300px}
 .bw{max-width:600px;margin:0 auto 12px}.bh{display:flex;justify-content:space-between;font-weight:700;font-size:.9rem;margin-bottom:4px}
 .bt{height:14px;background:#eee;border-radius:9px;overflow:hidden}.bf{height:100%;border-radius:9px;transition:width .5s}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
-.fc{height:250px;border-radius:14px;cursor:pointer;position:relative;box-shadow:0 3px 8px #0002;overflow:hidden}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(17rem,100%),1fr));gap:14px}
+.fc{height:17rem;border-radius:14px;cursor:pointer;position:relative;box-shadow:0 3px 8px #0002;overflow:hidden}
 .front,.back{position:absolute;inset:0;padding:14px;display:flex;flex-direction:column}
 .front{align-items:center;justify-content:center}.back{display:none;overflow-y:auto;background:#fff;border:4px solid;border-radius:14px;text-align:left}
 .fc.flip .front{display:none}.fc.flip .back{display:flex}
 .cw{font:700 1.9rem Poppins,sans-serif}
-.sp,.sp2{border:0;background:#fff;border-radius:50%;width:44px;height:44px;font-size:1.2rem;box-shadow:0 2px 4px #0002}
+.sp,.sp2{border:0;background:#fff;border-radius:50%;width:2.75rem;height:2.75rem;font-size:1.2rem;box-shadow:0 2px 4px #0002}
 .front .sp{position:absolute;right:12px;bottom:12px}
 .pos{background:#444;color:#fff;border-radius:5px;padding:1px 6px;font-size:.8rem;margin-right:5px}
 .df{font-weight:700;font-size:1.15rem;color:#c0392b;border-bottom:1px solid #eee;padding-bottom:6px;margin-bottom:6px}
@@ -30,29 +32,29 @@ button{font-family:inherit;color:var(--tx);cursor:pointer}
 .qc{border:3px solid #FFE66D;border-radius:12px;padding:16px;margin:10px 0;text-align:center}
 .qw{font:700 2.1rem Poppins,sans-serif;word-break:break-word}.qs{font-weight:700;font-size:1.35rem;line-height:1.6}
 .og{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.opt{background:#fff;border:4px solid;border-radius:12px;padding:12px;min-height:64px;font-size:1.05rem;font-weight:700}
+.opt{background:#fff;border:4px solid;border-radius:12px;padding:12px;min-height:4rem;font-size:1.05rem;font-weight:700}
 .opt:nth-child(1){border-color:#FFB3C6}.opt:nth-child(2){border-color:#FFC9A0}.opt:nth-child(3){border-color:#9ED9A0}.opt:nth-child(4){border-color:#8FD3F4}
 .opt.ok{background:#C1E1C1;border-color:#43a047!important}.opt.no{background:#FFD1DC;border-color:#e53935!important}
 #fb{text-align:center;font-weight:700;font-size:1.2rem;min-height:30px;margin-top:12px}.g{color:#1b7a2e}.r{color:#c62828}
 .mg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.mc{height:84px;border-radius:10px;font-weight:700;font-size:1rem;border:3px solid transparent;padding:4px}
+.mc{height:5.5rem;border-radius:10px;font-weight:700;font-size:1rem;border:3px solid transparent;padding:4px}
 .mc.sel{border-color:#d99a1e;transform:scale(.95)}.mc.done{visibility:hidden}
 .bxs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0}
-.bx{width:42px;height:48px;border-radius:9px;display:flex;align-items:center;justify-content:center;font:700 1.6rem Poppins,sans-serif;box-shadow:0 2px 4px #0002}
-.bx:not(.f){opacity:.75}.sin{font:700 1.8rem Poppins,sans-serif;text-align:center;width:85%;max-width:380px;letter-spacing:3px}
+.bx{width:2.7rem;height:3.1rem;border-radius:9px;display:flex;align-items:center;justify-content:center;font:700 1.6rem Poppins,sans-serif;box-shadow:0 2px 4px #0002}
+.bx:not(.f){opacity:.75}.sin{font:700 1.8rem Poppins,sans-serif;text-align:center;width:85%;max-width:24rem;letter-spacing:3px}
 .go{border:2px solid #8BCFE5;background:#A0E6FF;border-radius:16px;padding:10px 26px;font-weight:700;font-size:1.1rem;margin-top:14px}
 .rg{display:grid;grid-template-columns:1fr 1fr;gap:14px}.rc{border-radius:14px;padding:14px;text-align:center;line-height:1.7}
-.ring{width:96px;height:96px;border-radius:50%;margin:8px auto;display:flex;align-items:center;justify-content:center}
-.ri{width:70px;height:70px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font:700 1.2rem Poppins,sans-serif}
+.ring{width:6rem;height:6rem;border-radius:50%;margin:8px auto;display:flex;align-items:center;justify-content:center}
+.ri{width:4.4rem;height:4.4rem;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font:700 1.2rem Poppins,sans-serif}
 table{width:100%;border-collapse:collapse;font-size:.85rem;margin:8px 0}th,td{border:1px solid #ddd;padding:5px;text-align:center}th{background:#FFF5BA}
 .ov{position:fixed;inset:0;background:#fffdf8;display:none;align-items:center;justify-content:center;z-index:9}
-.ov>div{background:#fff;padding:22px;border-radius:14px;box-shadow:0 3px 14px #0003;width:300px;display:flex;flex-direction:column;gap:10px}
-.rb{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}.big{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:92px;border-radius:14px;padding:10px;font:700 1.15rem Poppins,sans-serif;color:var(--tx);text-decoration:none;box-shadow:0 2px 6px #0002;text-align:center}.big small{font:400 .8rem Nunito,sans-serif}.bd{border-collapse:collapse}
-.lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}.lb{display:flex;align-items:center;justify-content:center;height:72px;border-radius:14px;font:700 1.6rem Poppins,sans-serif;color:var(--tx);text-decoration:none;box-shadow:0 2px 6px #0002}
-@media(max-width:600px){.rb{grid-template-columns:1fr}.og,.rg{grid-template-columns:1fr}.mg{grid-template-columns:repeat(2,1fr)}.bx{width:34px;height:40px;font-size:1.3rem}}
+.ov>div{background:#fff;padding:22px;border-radius:14px;box-shadow:0 3px 14px #0003;width:min(19rem,90vw);display:flex;flex-direction:column;gap:10px}
+.rb{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}.big{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:5.75rem;border-radius:14px;padding:10px;font:700 1.15rem Poppins,sans-serif;color:var(--tx);text-decoration:none;box-shadow:0 2px 6px #0002;text-align:center}.big small{font:400 .8rem Nunito,sans-serif}.bd{border-collapse:collapse}
+.lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.5rem,1fr));gap:10px}.lb{display:flex;align-items:center;justify-content:center;height:4.5rem;border-radius:14px;font:700 1.6rem Poppins,sans-serif;color:var(--tx);text-decoration:none;box-shadow:0 2px 6px #0002}
+@media(max-width:600px){.rb{grid-template-columns:1fr}.og,.rg{grid-template-columns:1fr}.mg{grid-template-columns:repeat(2,1fr)}.bx{width:2.3rem;height:2.8rem;font-size:1.3rem}}
 </style></head><body>
 <h1>Vocabulary Master</h1>
-<div class="hd"><span>字母 <select id="ls"></select></span><span id="who"></span><button class="tb" style="min-height:30px;padding:3px 10px" onclick="relogin()">換人</button><a id="hm" class="tb" style="display:none;text-decoration:none;min-height:30px;padding:4px 10px;color:var(--tx)">🏠 字母選單</a><span id="sy"></span></div>
+<div class="hd"><span>字母 <select id="ls"></select></span><span id="who"></span><span class="fz">字體 <button onclick="setFz(100)" data-z="100">小</button><button onclick="setFz(125)" data-z="125">中</button><button onclick="setFz(150)" data-z="150">大</button></span><button class="tb" style="min-height:30px;padding:3px 10px" onclick="relogin()">換人</button><a id="hm" class="tb" style="display:none;text-decoration:none;min-height:30px;padding:4px 10px;color:var(--tx)">🏠 字母選單</a><span id="sy"></span></div>
 <div class="tabs" id="tabs"></div><div id="main"></div>
 <div class="ov" id="ov"><div><b style="font:700 1.2rem Poppins">請輸入你的資料</b>
 <input id="lc" placeholder="班級（例如 801）"><input id="lt" placeholder="座號（例如 5）" inputmode="numeric"><input id="ln" placeholder="姓名">
@@ -76,6 +78,8 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const shuf=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+function setFz(z){document.documentElement.style.fontSize=z+'%';ls.set('vm:fz',z);document.querySelectorAll('.fz button').forEach(b=>b.classList.toggle('on',+b.dataset.z===z))}
+setFz(ls.get('vm:fz',125));
 let user,L=LETTER,W=[],S={},tab='study',page=0,last=null,timer=null,adminKey='';
 function speak(t,r){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=r||0.7;speechSynthesis.speak(u)}
 const key=()=>'vm:'+user.id+':all';
