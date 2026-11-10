@@ -47,7 +47,7 @@ button{font-family:inherit;color:var(--tx);cursor:pointer}
 .mt{margin:10px 0 4px}.tg{font:700 1rem Poppins,sans-serif;padding:6px 14px;margin:0 4px;border:2px solid #90a4ae;border-radius:20px;background:#fff;cursor:pointer}.tg.act{background:#4ECDC4;border-color:#26a69a;color:#fff}
 .sph{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center}.sph .sp{white-space:nowrap;width:auto;height:auto;border-radius:999px;padding:8px 16px;font:700 1rem Poppins,sans-serif;background:#7c3aed;color:#fff;border:0}
 .wc{width:4.6rem;border-radius:10px;box-shadow:0 2px 4px #0002;display:flex;flex-direction:column;align-items:center;padding:4px;border:3px solid transparent}.wc.on{border-color:#1976d2}.wc.bad{border-color:#c62828;background:#ffcdd2!important}
-.wb{position:relative;width:100%;height:7.5rem;background:#fff;border-radius:6px;overflow:hidden;background-image:linear-gradient(#cfd8dc,#cfd8dc),linear-gradient(#ef9a9a,#ef9a9a),linear-gradient(#cfd8dc,#cfd8dc);background-size:100% 2px;background-position:0 25%,0 50%,0 75%;background-repeat:no-repeat}
+.wb{position:relative;width:100%;height:7.5rem;background:#fff;border-radius:6px;overflow:hidden;background-image:linear-gradient(#cfd8dc,#cfd8dc),linear-gradient(#cfd8dc,#cfd8dc),linear-gradient(#ef5350,#ef5350),linear-gradient(#cfd8dc,#cfd8dc);background-size:100% 2px;background-position:0 20%,0 40%,0 60%,0 80%;background-repeat:no-repeat}
 .wc.ed{cursor:pointer}.wcv{position:absolute;inset:0;width:100%;height:100%;touch-action:none}.bg{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font:700 2.6rem Poppins,sans-serif;pointer-events:none}.kbm .wcv{display:none}.kbm .ed .bg{display:flex}
 .sl{font:700 1.5rem Poppins,sans-serif;min-height:2rem;line-height:2rem}.ph{font-size:.9rem;color:#607d8b;margin:4px 0}
 .kbd{max-width:44rem;margin:8px auto}.kr{display:flex;justify-content:center;gap:5px;margin:5px 0}.kk{flex:1;max-width:3.4rem;font:700 1.2rem Poppins,sans-serif;padding:9px 0;border:2px solid #b0bec5;border-radius:9px;background:#fff;cursor:pointer}.kk:active{background:#FFE66D}.kk.wd{max-width:4.8rem}
@@ -58,14 +58,14 @@ button{font-family:inherit;color:var(--tx);cursor:pointer}
 .rg{display:grid;grid-template-columns:1fr 1fr;gap:14px}.rc{border-radius:14px;padding:14px;text-align:center;line-height:1.7}
 .ring{width:6rem;height:6rem;border-radius:50%;margin:8px auto;display:flex;align-items:center;justify-content:center}
 .ri{width:4.4rem;height:4.4rem;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font:700 1.2rem Poppins,sans-serif}
-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:8px 0}th,td{border:1px solid #ddd;padding:5px;text-align:center}th{background:#FFF5BA}
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin:8px 0}th,td{border:1px solid #ddd;padding:5px;text-align:center}th{background:#FFF5BA}.tc{margin:6px 0;display:flex;gap:6px;flex-wrap:wrap;align-items:center}.tc button{border:1px solid #bbb;background:#fff;border-radius:14px;padding:4px 10px;cursor:pointer}.tc button.on{background:#FFE66D;border-color:#e0b800;font-weight:700}.tc input,.tc select{padding:5px;border:1px solid #bbb;border-radius:6px}.tr{cursor:pointer}.tr:hover,.tr.sel{background:#FFF9D6}.td{background:#E8F5FF;border-radius:8px;padding:8px;margin:6px 0;font-size:.9rem}
 .ov{position:fixed;inset:0;background:#fffdf8;display:none;align-items:center;justify-content:center;z-index:9}
 .ov>div{background:#fff;padding:22px;border-radius:14px;box-shadow:0 3px 14px #0003;width:min(19rem,90vw);display:flex;flex-direction:column;gap:10px}
 .rb{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}.big{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:5.75rem;border-radius:14px;padding:10px;font:700 1.15rem Poppins,sans-serif;color:var(--tx);text-decoration:none;box-shadow:0 2px 6px #0002;text-align:center}.big small{font:400 .8rem Nunito,sans-serif}.bd{border-collapse:collapse}
 .lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.5rem,1fr));gap:10px}.lb{display:flex;align-items:center;justify-content:center;height:4.5rem;border-radius:14px;font:700 1.6rem Poppins,sans-serif;color:var(--tx);text-decoration:none;box-shadow:0 2px 6px #0002}
 @media(max-width:600px){.rb{grid-template-columns:1fr}.og,.rg{grid-template-columns:1fr}.mg{grid-template-columns:repeat(2,1fr)}.bx{width:2.3rem;height:2.8rem;font-size:1.3rem}}
 </style></head><body>
-<h1>Vocabulary Master</h1><div style="text-align:center;font-size:.7rem;color:#999;margin-top:-6px">版本 2026-11-10 b</div>
+<h1>Vocabulary Master</h1><div style="text-align:center;font-size:.7rem;color:#999;margin-top:-6px">版本 2026-11-10 c</div>
 <div class="hd"><span>字母 <select id="ls"></select></span><span id="who"></span><span class="fz">字體 <button onclick="setFz(100)" data-z="100">小</button><button onclick="setFz(125)" data-z="125">中</button><button onclick="setFz(150)" data-z="150">大</button></span><button class="tb" style="min-height:30px;padding:3px 10px" onclick="relogin()">換人</button><a id="hm" class="tb" style="display:none;text-decoration:none;min-height:30px;padding:4px 10px;color:var(--tx)">🏠 字母選單</a><span id="sy"></span></div>
 <div class="tabs" id="tabs"></div><div id="main"></div>
 <div class="ov" id="ov"><div><b style="font:700 1.2rem Poppins">請輸入你的資料</b>
@@ -306,20 +306,57 @@ function vReport(){const bg=[4,3,0,2];let h='<h2 style="text-align:center;font-f
  $('main').innerHTML=h}
 
 /* ---------- 教師後台 ---------- */
-async function vTeacher(){const box=$('main');
+let TS={recs:null,sel:null,q:'',sort:'name',days:30,open:null,fd:null};
+async function vTeacher(force){const box=$('main');
  if(!API){box.innerHTML='<p>尚未設定 API 網址，無法讀取後台資料。</p>';return}
  if(!adminKey)adminKey=prompt('請輸入教師密碼')||'';if(!adminKey){box.innerHTML='<p>需要教師密碼。</p>';return}
- box.innerHTML='<p>讀取中…</p>';let j;
- try{j=await(await fetch(API+'?action=admin&letter='+encodeURIComponent(L)+'&key='+encodeURIComponent(adminKey))).json()}catch(e){box.innerHTML='<p>讀取失敗（可能離線）。</p>';return}
- if(!j.ok){adminKey='';box.innerHTML='<p>'+esc(j.msg||'錯誤')+'</p>';return}
- const by={},wr={},PW=new Set(W.map(x=>x.id));
- j.records.forEach(r=>{const id=r.cls+'-'+r.seat+'-'+r.name,o=by[id]||(by[id]={n:r.cls+' 班 '+r.seat+' 號 '+r.name,a:0,c:0,t:0,m:{choice:new Set,cloze:new Set,match:new Set,spell:new Set}});
-  o.a++;o.t=Math.max(o.t,r.t);if(r.ok){o.c++;o.m[r.mode]&&PW.has(r.wid)&&o.m[r.mode].add(r.wid)}else{const k=r.word+'|'+r.mode;wr[k]=(wr[k]||0)+1}});
- const T={};Object.keys(NM).forEach(m=>T[m]=pool(m).length);
- const rows=Object.values(by).sort((a,b)=>a.n.localeCompare(b.n,'zh')).map(o=>`<tr><td>${esc(o.n)}</td><td>${o.a}</td><td>${Math.round(o.c/o.a*100)}%</td>${Object.keys(NM).map(m=>`<td>${o.m[m].size}/${T[m]}</td>`).join('')}<td>${new Date(o.t).toLocaleString('zh-TW',{hour12:false})}</td></tr>`).join('');
+ if(!TS.recs||force||TS.fd!==TS.days){box.innerHTML='<p>讀取中…</p>';let j;
+  const since=TS.days?Date.now()-TS.days*864e5:0;
+  try{j=await(await fetch(API+'?action=admin&letter='+encodeURIComponent(L)+'&since='+since+'&key='+encodeURIComponent(adminKey))).json()}catch(e){box.innerHTML='<p>讀取失敗（可能離線）。</p>';return}
+  if(!j.ok){adminKey='';box.innerHTML='<p>'+esc(j.msg||'錯誤')+'</p>';return}
+  TS.recs=j.records;TS.fd=TS.days;TS.open=null;
+  if(!TS.sel)TS.sel=new Set(ls.get('vm:myCls',[]).map(String))}
+ const cl=[...new Set(TS.recs.map(r=>String(r.cls)))].sort((a,b)=>a.localeCompare(b,'zh',{numeric:true}));
+ TS.sel=new Set([...TS.sel].filter(c=>cl.includes(c)));
+ box.innerHTML=`<h3>字母 ${esc(L)}：作業進度（已答對單字數／總數）</h3>
+ <div class="tc"><div>範圍：<select id="tdays" onchange="TS.days=+this.value;vTeacher()">${[[1,'今天'],[7,'近 7 天'],[30,'近 30 天'],[0,'全部']].map(([v,t])=>`<option value="${v}" ${v===TS.days?'selected':''}>${t}</option>`).join('')}</select>
+  排序：<select onchange="TS.sort=this.value;tRender()">${[['name','班級／座號'],['t','最近練習'],['acc','正確率 低→高'],['a','作答數 少→多']].map(([v,t])=>`<option value="${v}" ${v===TS.sort?'selected':''}>${t}</option>`).join('')}</select>
+  <input id="tq" placeholder="🔍 搜尋姓名／座號／班級" value="${esc(TS.q)}" oninput="TS.q=this.value;tRender(1)">
+  <button onclick="vTeacher(1)">🔄 重新整理</button><button onclick="tCsv()">⬇ 匯出 CSV</button></div>
+ <div class="tc"><b>班級：</b><span id="tchips"></span></div><div id="tres"></div>`;
+ tRender()}
+function tChip(c){TS.sel.has(c)?TS.sel.delete(c):TS.sel.add(c);TS.open=null;tRender()}
+function tAll(){TS.sel.clear();TS.open=null;tRender()}
+function tSave(){ls.set('vm:myCls',[...TS.sel]);alert(TS.sel.size?'已儲存「我的班級」：'+[...TS.sel].join('、')+'\n之後開啟後台會自動只顯示這些班級。':'已清除「我的班級」，之後預設顯示全部班級。');tRender()}
+function tView(){const q=TS.q.trim().toLowerCase(),now=Date.now(),by={},wr={};
+ TS.recs.forEach(r=>{const c=String(r.cls);if(TS.sel.size&&!TS.sel.has(c))return;
+  const key=c+'-'+r.seat+'-'+r.name;if(q&&!(c+' '+r.seat+' '+r.name+' '+key).toLowerCase().includes(q))return;
+  const o=by[key]||(by[key]={key,cls:c,seat:r.seat,name:r.name,a:0,c:0,t:0,m:{choice:new Set,cloze:new Set,match:new Set,spell:new Set},ma:{},mc:{},wr:{}});
+  o.a++;o.t=Math.max(o.t,r.t);o.ma[r.mode]=(o.ma[r.mode]||0)+1;
+  if(r.ok){o.c++;o.mc[r.mode]=(o.mc[r.mode]||0)+1;o.m[r.mode]&&PWS.has(r.wid)&&o.m[r.mode].add(r.wid)}else{const k=r.word+'|'+r.mode;wr[k]=(wr[k]||0)+1;o.wr[k]=(o.wr[k]||0)+1}});
+ const list=Object.values(by);
+ const F={name:(a,b)=>a.cls.localeCompare(b.cls,'zh',{numeric:true})||(+a.seat-+b.seat)||a.name.localeCompare(b.name,'zh'),t:(a,b)=>a.t-b.t,acc:(a,b)=>acc(a)-acc(b),a:(a,b)=>a.a-b.a}[TS.sort];
+ list.sort(TS.sort==='t'?(a,b)=>b.t-a.t:F);return{list,wr}}
+let PWS=new Set;const acc=o=>o.c/o.a;
+function tRender(keep){PWS=new Set(W.map(x=>x.id));
+ const cl=[...new Set(TS.recs.map(r=>String(r.cls)))].sort((a,b)=>a.localeCompare(b,'zh',{numeric:true}));
+ $('tchips').innerHTML=`<button class="${TS.sel.size?'':'on'}" onclick="tAll()">全部</button>`+cl.map(c=>`<button class="${TS.sel.has(c)?'on':''}" onclick="tChip('${esc(c).replace(/'/g,'')}')">${esc(c)} 班</button>`).join('')+`<button onclick="tSave()">⭐ 存為我的班級</button>`;
+ const{list,wr}=tView(),T={};Object.keys(NM).forEach(m=>T[m]=pool(m).length);const now=Date.now();
+ const tot=list.reduce((s,o)=>s+o.a,0),cor=list.reduce((s,o)=>s+o.c,0);
+ const rows=list.map(o=>{const idle=now-o.t>7*864e5;return `<tr class="tr ${TS.open===o.key?'sel':''}" onclick="TS.open=TS.open==='${o.key.replace(/['\\]/g,'')}'?null:'${o.key.replace(/['\\]/g,'')}';tRender(1)"><td style="text-align:left">${esc(o.cls)} 班 ${esc(o.seat)} 號 ${esc(o.name)}</td><td>${o.a}</td><td>${Math.round(acc(o)*100)}%</td>${Object.keys(NM).map(m=>`<td>${o.m[m].size}/${T[m]}</td>`).join('')}<td style="${idle?'color:#d32f2f':''}">${idle?'⚠ ':''}${new Date(o.t).toLocaleString('zh-TW',{hour12:false})}</td></tr>`}).join('');
  const top=Object.entries(wr).sort((a,b)=>b[1]-a[1]).slice(0,15).map(([k,v])=>{const[w,m]=k.split('|');return `<tr><td>${esc(w)}</td><td>${NM[m]||m}</td><td>${v}</td></tr>`}).join('');
- box.innerHTML=`<h3>字母 ${L}：全班作業進度（已答對單字數／總數）</h3><div style="overflow-x:auto"><table><tr><th>學生</th><th>作答數</th><th>正確率</th>${Object.values(NM).map(n=>`<th>${n}</th>`).join('')}<th>最近練習</th></tr>${rows||'<tr><td colspan=8>尚無資料</td></tr>'}</table></div>
- <h3>常錯單字 Top 15</h3><table><tr><th>單字</th><th>模式</th><th>答錯次數</th></tr>${top||'<tr><td colspan=3>尚無資料</td></tr>'}</table>`}
+ let det='';const od=list.find(o=>o.key===TS.open);
+ if(od){const dt=Object.entries(od.wr).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([k,v])=>{const[w,m]=k.split('|');return `${esc(w)}（${NM[m]||m}×${v}）`}).join('、')||'無';
+  det=`<div class="td"><b>${esc(od.cls)} 班 ${esc(od.seat)} 號 ${esc(od.name)}</b>　`+Object.keys(NM).map(m=>`${NM[m]}：${od.mc[m]||0}/${od.ma[m]||0} 題答對`).join('　')+`<br>常錯單字：${dt}</div>`}
+ $('tres').innerHTML=`<p style="margin:6px 0">共 <b>${list.length}</b> 位學生、<b>${tot}</b> 筆作答，平均正確率 <b>${tot?Math.round(cor/tot*100):0}%</b>${TS.sel.size?'（僅顯示：'+[...TS.sel].join('、')+' 班）':''}　<small>點選學生可看詳細；紅字＝超過 7 天未練習</small></p>${det}
+ <div style="overflow-x:auto"><table><tr><th>學生</th><th>作答數</th><th>正確率</th>${Object.values(NM).map(n=>`<th>${n}</th>`).join('')}<th>最近練習</th></tr>${rows||'<tr><td colspan=8>沒有符合的資料</td></tr>'}</table></div>
+ <h3>常錯單字 Top 15${TS.sel.size?'（所選班級）':''}</h3><table><tr><th>單字</th><th>模式</th><th>答錯次數</th></tr>${top||'<tr><td colspan=3>尚無資料</td></tr>'}</table>`}
+function tCsv(){PWS=new Set(W.map(x=>x.id));const{list}=tView(),T={};Object.keys(NM).forEach(m=>T[m]=pool(m).length);
+ const q=s=>'"'+String(s).replace(/"/g,'""')+'"';
+ const h=['班級','座號','姓名','作答數','答對數','正確率%',...Object.values(NM).map(n=>n+'(已掌握)'),'最近練習'];
+ const rs=list.map(o=>[o.cls,o.seat,o.name,o.a,o.c,Math.round(o.c/o.a*100),...Object.keys(NM).map(m=>o.m[m].size+'/'+T[m]),new Date(o.t).toLocaleString('zh-TW',{hour12:false})]);
+ const csv='\ufeff'+[h,...rs].map(r=>r.map(q).join(',')).join('\r\n');
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='作業進度_字母'+L+'.csv';a.click()}
 
 function home(){$('tabs').innerHTML='';sync();
  $('main').innerHTML='<div class="rb"><a class="big" style="background:#FFB3C6" href="?letter=ALL">🎲 全字母隨機挑戰<small>A–Z 全部單字混在一起，練到全部熟練</small></a><a class="big" style="background:#FFE66D" href="?letter='+LETTERS[Math.floor(Math.random()*LETTERS.length)]+'">🎯 隨機抽一個字母<small>不知道練哪個？讓電腦決定</small></a></div><h2 style="text-align:center;font-family:Poppins">或選擇字母</h2><div class="lg">'+LETTERS.map((x,i)=>`<a class="lb" style="background:${COL[i%6]}" href="?letter=${x}">${x}</a>`).join('')+'</div>'}
