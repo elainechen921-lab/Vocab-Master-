@@ -41,6 +41,9 @@ button{font-family:inherit;color:var(--tx);cursor:pointer}
 .mc.sel{border-color:#d99a1e;transform:scale(.95)}.mc.done{visibility:hidden}
 .bxs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0}
 .bx{width:2.7rem;height:3.1rem;border-radius:9px;display:flex;align-items:center;justify-content:center;font:700 1.6rem Poppins,sans-serif;box-shadow:0 2px 4px #0002}
+.tbar{height:12px;background:#eee;border-radius:8px;margin:8px auto;max-width:30rem;overflow:hidden}#tb{height:100%;width:100%;background:#4ECDC4;transition:width .2s linear}
+.mres{margin:14px auto;max-width:30rem;padding:14px;border-radius:12px;font:700 1.3rem Poppins,sans-serif}.mres.ok{background:#e8f5e9;border:3px solid #66bb6a}.mres.no{background:#ffebee;border:3px solid #ef5350}.mres .go{margin-top:10px}.mres small{font-weight:400;font-size:.9rem}
+.rv{margin-top:14px;padding:12px;border-radius:12px;background:#fffde7;border:2px dashed #FFE66D;text-align:center}.rs{font-size:1.15rem}.hl{background:#ffe082;border-radius:4px;padding:0 3px}.rv .sc{margin:6px 0 10px}
 .mt{margin:10px 0 4px}.tg{font:700 1rem Poppins,sans-serif;padding:6px 14px;margin:0 4px;border:2px solid #90a4ae;border-radius:20px;background:#fff;cursor:pointer}.tg.act{background:#4ECDC4;border-color:#26a69a;color:#fff}
 .sph{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center}.sph .sp{white-space:nowrap;width:auto;height:auto;border-radius:999px;padding:8px 16px;font:700 1rem Poppins,sans-serif;background:#7c3aed;color:#fff;border:0}
 .wc{width:4.6rem;border-radius:10px;box-shadow:0 2px 4px #0002;display:flex;flex-direction:column;align-items:center;padding:4px;border:3px solid transparent}.wc.on{border-color:#1976d2}.wc.bad{border-color:#c62828;background:#ffcdd2!important}
@@ -62,7 +65,7 @@ table{width:100%;border-collapse:collapse;font-size:.85rem;margin:8px 0}th,td{bo
 .lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.5rem,1fr));gap:10px}.lb{display:flex;align-items:center;justify-content:center;height:4.5rem;border-radius:14px;font:700 1.6rem Poppins,sans-serif;color:var(--tx);text-decoration:none;box-shadow:0 2px 6px #0002}
 @media(max-width:600px){.rb{grid-template-columns:1fr}.og,.rg{grid-template-columns:1fr}.mg{grid-template-columns:repeat(2,1fr)}.bx{width:2.3rem;height:2.8rem;font-size:1.3rem}}
 </style></head><body>
-<h1>Vocabulary Master</h1>
+<h1>Vocabulary Master</h1><div style="text-align:center;font-size:.7rem;color:#999;margin-top:-6px">版本 2026-11-10 b</div>
 <div class="hd"><span>字母 <select id="ls"></select></span><span id="who"></span><span class="fz">字體 <button onclick="setFz(100)" data-z="100">小</button><button onclick="setFz(125)" data-z="125">中</button><button onclick="setFz(150)" data-z="150">大</button></span><button class="tb" style="min-height:30px;padding:3px 10px" onclick="relogin()">換人</button><a id="hm" class="tb" style="display:none;text-decoration:none;min-height:30px;padding:4px 10px;color:var(--tx)">🏠 字母選單</a><span id="sy"></span></div>
 <div class="tabs" id="tabs"></div><div id="main"></div>
 <div class="ov" id="ov"><div><b style="font:700 1.2rem Poppins">請輸入你的資料</b>
@@ -177,7 +180,7 @@ function ans(m,w,ok){const s=S[m];s.cur=null;last=w.id;
  const f=$('fb');if(f){f.textContent=ok?'Correct!你答對了!':'Try again!再試一次!';f.className=ok?'g':'r'}
  speak(ok?'Correct!':'Try again!',0.9);
  const b=document.querySelector('.bw');if(b)b.outerHTML=bar(m)}
-function vGame(m){$('main').innerHTML=(m==='choice'?'':bar(m))+'<div id="qa"></div><div id="fb"></div>';play(m)}
+function vGame(m){$('main').innerHTML=bar(m)+'<div id="qa"></div><div id="fb"></div>';play(m)}
 function play(m){if(tab!==m)return;$('fb').textContent='';const id=nextId(m),box=$('qa');
  if(id==null){box.innerHTML='<h3 style="text-align:center">'+(pool(m).length?'🎉 恭喜！這個模式已全數通關！':'這個字母還沒有可出題的內容（克漏字需要在試算表填「例句」）')+'</h3>';return}
  const w=W.find(x=>x.id===id);
@@ -190,7 +193,12 @@ function play(m){if(tab!==m)return;$('fb').textContent='';const id=nextId(m),box
  else spellQ(w)}
 function mc(m,w,q,opts){$('qa').innerHTML='<div class="qc">'+q+'</div><div class="og"></div>';const g=document.querySelector('#qa .og');
  shuf(opts).forEach(o=>{const b=document.createElement('button');b.className='opt';b.textContent=o.t;b._ok=o.ok;
-  b.onclick=()=>{[...g.children].forEach(x=>{x.disabled=true;if(x._ok)x.classList.add('ok')});if(!o.ok)b.classList.add('no');ans(m,w,!!o.ok);setTimeout(()=>play(m),o.ok?1500:2800)};g.appendChild(b)})}
+  b.onclick=()=>{[...g.children].forEach(x=>{x.disabled=true;if(x._ok)x.classList.add('ok')});if(!o.ok)b.classList.add('no');ans(m,w,!!o.ok);
+   if(m==='cloze'){const full=esc(w.s).replace(new RegExp('(?<![A-Za-z])'+esc(w.w).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![A-Za-z])','gi'),x=>'<b class="hl">'+x+'</b>');
+    $('qa').insertAdjacentHTML('beforeend',`<div class="rv"><div class="rs">${full} <button class="sp2" style="width:32px;height:32px;font-size:.9rem" data-t="${esc(w.s)}">🔊</button></div><div class="sc">${esc(w.sc||'')}</div><button class="go" id="nx">下一題 ➡</button></div>`);
+    $('nx').onclick=()=>play(m);$('nx').scrollIntoView({block:'nearest',behavior:'smooth'});
+    document.querySelector('#qa .sp2').onclick=e=>speak(e.currentTarget.dataset.t)}
+   else setTimeout(()=>play(m),o.ok?1500:2800)};g.appendChild(b)})}
 function esq(t){return String(t).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
 /* 拼字聽寫：手寫（辨識後顯示在手寫字下方）或點選 A–Z 字母鍵；不會自動發音，需按 🔊 */
 let SP=null;
@@ -256,27 +264,34 @@ function spSubmit(giveUp){if(!SP||SP.done)return;const m=SP;
  clearTimeout(m.tm);m.done=true;const ok=giveUp!==true&&m.L.join('').toLowerCase()===m.word.toLowerCase();
  spView();if(!ok){$('sbx').insertAdjacentHTML('afterend',`<div class="ans">正確拼法：<b>${esc(m.word)}</b></div>`)}
  ans('spell',m.w,ok);setTimeout(()=>play('spell'),ok?1500:2800)}
-document.addEventListener('keydown',e=>{if(!SP||SP.done||tab!=='spell'||!$('sbx')||e.ctrlKey||e.metaKey||e.altKey)return;
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&tab==='cloze'){const n=$('nx');if(n){n.click();e.preventDefault();return}}
+ if(!SP||SP.done||tab!=='spell'||!$('sbx')||e.ctrlKey||e.metaKey||e.altKey)return;
  if(/^[a-zA-Z]$/.test(e.key)){spPut(e.key.toLowerCase());e.preventDefault()}else if(e.key==='Backspace'){spDel();e.preventDefault()}else if(e.key==='Enter'){spSubmit();e.preventDefault()}});
 
 /* ---------- 配對遊戲 ---------- */
-function vMatch(){$('main').innerHTML='<div style="text-align:center"><div style="font:700 1.5rem Poppins">⏱ <span id="mt">0</span> 秒</div><div id="mg" class="mg" style="margin-top:10px"></div></div>';round()}
-function round(){clearInterval(timer);let sec=0,sel=null,done=0;$('mt').textContent=0;
- let ids=shuf(pool('match').filter(i=>!S.match.m.includes(i)));if(ids.length<4)ids=ids.concat(shuf(pool('match').filter(i=>S.match.m.includes(i))));ids=ids.slice(0,4);
+function vMatch(){$('main').innerHTML=bar('match')+'<div style="text-align:center"><div style="font:700 1.5rem Poppins">⏱ <span id="mt">20</span> 秒</div><div class="tbar"><div id="tb"></div></div><div id="mg" class="mg" style="margin-top:10px"></div><div id="mr"></div></div>';round()}
+function round(keep){clearInterval(timer);const LIM=20000;let sel=null,done=0,over=false;$('mr').innerHTML='';
+ let ids=keep;if(!ids){ids=shuf(pool('match').filter(i=>!S.match.m.includes(i)));if(ids.length<4)ids=ids.concat(shuf(pool('match').filter(i=>S.match.m.includes(i))));ids=ids.slice(0,4)}
  if(!ids.length){$('mg').outerHTML='<h3>目前沒有單字</h3>';return}
  const cs=shuf(ids.flatMap(id=>{const w=W.find(x=>x.id===id);return [{id,t:w.w,k:'w'},{id,t:w.p+' '+w.d,k:'d'}]}));
  $('mg').innerHTML='';
+ const t0=Date.now(),res=(ok,sec)=>{over=true;clearInterval(timer);document.querySelectorAll('#mg .mc').forEach(x=>x.disabled=true);
+  $('mr').innerHTML=ok?`<div class="mres ok">🎉 闖關成功！用了 ${sec} 秒<br><button class="go" id="mn">下一組 ➡</button></div>`:`<div class="mres no">⏰ 時間到，闖關失敗<br><small>同樣這 ${ids.length} 組再練習一次，直到通過為止</small><br><button class="go" id="mn">🔄 再練習一次</button></div>`;
+  if(ok){ids.forEach(id=>{if(!S.match.m.includes(id))S.match.m.push(id)});save();const bw=document.querySelector('.bw');if(bw)bw.outerHTML=bar('match');speak('Great',0.9)}else speak('Try again!',0.9);
+  $('mn').onclick=()=>round(ok?null:ids)};
  cs.forEach((c,i)=>{const b=document.createElement('button');b.className='mc';b.style.background=COL[i%6];b.textContent=c.t;
-  b.onclick=()=>{if(b.classList.contains('done'))return;
+  b.onclick=()=>{if(over||b.classList.contains('done'))return;
    if(!sel){sel={c,b};b.classList.add('sel');return}
    if(sel.b===b){b.classList.remove('sel');sel=null;return}
    const a=sel;sel=null;const w=W.find(x=>x.id===c.id);
-   if(a.c.id===c.id&&a.c.k!==c.k){a.b.classList.replace('sel','done');b.classList.add('done');speak('Great',0.9);
-    if(!S.match.m.includes(c.id)){S.match.m.push(c.id);save()}rec('match',w,1);
-    if(++done===ids.length){clearInterval(timer);setTimeout(()=>{alert('完成！用了 '+sec+' 秒 🎉');if(tab==='match')round()},400)}}
+   if(a.c.id===c.id&&a.c.k!==c.k){a.b.classList.replace('sel','done');b.classList.add('done');rec('match',w,1);
+    if(++done===ids.length)res(true,((Date.now()-t0)/1000).toFixed(1))}
    else{rec('match',W.find(x=>x.id===a.c.id),0);b.classList.add('sel');setTimeout(()=>{a.b.classList.remove('sel');b.classList.remove('sel')},500)}};
   $('mg').appendChild(b)});
- timer=setInterval(()=>{sec++;const t=$('mt');if(t)t.textContent=sec},1000)}
+ const tick=()=>{if(tab!=='match'||!$('mt')){clearInterval(timer);return}if(over)return;const left=Math.max(0,LIM-(Date.now()-t0));
+  $('mt').textContent=Math.ceil(left/1000);const tb=$('tb');tb.style.width=(left/LIM*100)+'%';tb.style.background=left<=5000?'#ef5350':'#4ECDC4';
+  if(left<=0)res(false)};
+ tick();timer=setInterval(tick,200)}
 
 /* ---------- 學習報告 ---------- */
 function vReport(){const bg=[4,3,0,2];let h='<h2 style="text-align:center;font-family:Poppins">個人化學習報告</h2><div class="rg">';
