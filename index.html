@@ -58,14 +58,14 @@ button{font-family:inherit;color:var(--tx);cursor:pointer}
 .rg{display:grid;grid-template-columns:1fr 1fr;gap:14px}.rc{border-radius:14px;padding:14px;text-align:center;line-height:1.7}
 .ring{width:6rem;height:6rem;border-radius:50%;margin:8px auto;display:flex;align-items:center;justify-content:center}
 .ri{width:4.4rem;height:4.4rem;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font:700 1.2rem Poppins,sans-serif}
-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:8px 0}th,td{border:1px solid #ddd;padding:5px;text-align:center}th{background:#FFF5BA}.tc{margin:6px 0;display:flex;gap:6px;flex-wrap:wrap;align-items:center}.tc button{border:1px solid #bbb;background:#fff;border-radius:14px;padding:4px 10px;cursor:pointer}.tc button.on{background:#FFE66D;border-color:#e0b800;font-weight:700}.tc input,.tc select{padding:5px;border:1px solid #bbb;border-radius:6px}.tr{cursor:pointer}.tr:hover,.tr.sel{background:#FFF9D6}.td{background:#E8F5FF;border-radius:8px;padding:8px;margin:6px 0;font-size:.9rem}
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin:8px 0}th,td{border:1px solid #ddd;padding:5px;text-align:center}th{background:#FFF5BA}#stb{height:100%;transition:width .2s linear}.spt{text-align:center;font:700 1.2rem Poppins;margin-bottom:6px}.tc{margin:6px 0;display:flex;gap:6px;flex-wrap:wrap;align-items:center}.tc button{border:1px solid #bbb;background:#fff;border-radius:14px;padding:4px 10px;cursor:pointer}.tc button.on{background:#FFE66D;border-color:#e0b800;font-weight:700}.tc input,.tc select{padding:5px;border:1px solid #bbb;border-radius:6px}.tr{cursor:pointer}.tr:hover,.tr.sel{background:#FFF9D6}.td{background:#E8F5FF;border-radius:8px;padding:8px;margin:6px 0;font-size:.9rem}
 .ov{position:fixed;inset:0;background:#fffdf8;display:none;align-items:center;justify-content:center;z-index:9}
 .ov>div{background:#fff;padding:22px;border-radius:14px;box-shadow:0 3px 14px #0003;width:min(19rem,90vw);display:flex;flex-direction:column;gap:10px}
 .rb{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}.big{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:5.75rem;border-radius:14px;padding:10px;font:700 1.15rem Poppins,sans-serif;color:var(--tx);text-decoration:none;box-shadow:0 2px 6px #0002;text-align:center}.big small{font:400 .8rem Nunito,sans-serif}.bd{border-collapse:collapse}
 .lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.5rem,1fr));gap:10px}.lb{display:flex;align-items:center;justify-content:center;height:4.5rem;border-radius:14px;font:700 1.6rem Poppins,sans-serif;color:var(--tx);text-decoration:none;box-shadow:0 2px 6px #0002}
 @media(max-width:600px){.rb{grid-template-columns:1fr}.og,.rg{grid-template-columns:1fr}.mg{grid-template-columns:repeat(2,1fr)}.bx{width:2.3rem;height:2.8rem;font-size:1.3rem}}
 </style></head><body>
-<h1>Vocabulary Master</h1><div style="text-align:center;font-size:.7rem;color:#999;margin-top:-6px">版本 2026-11-10 c</div>
+<h1>Vocabulary Master</h1><div style="text-align:center;font-size:.7rem;color:#999;margin-top:-6px">版本 2026-11-11 a</div>
 <div class="hd"><span>字母 <select id="ls"></select></span><span id="who"></span><span class="fz">字體 <button onclick="setFz(100)" data-z="100">小</button><button onclick="setFz(125)" data-z="125">中</button><button onclick="setFz(150)" data-z="150">大</button></span><button class="tb" style="min-height:30px;padding:3px 10px" onclick="relogin()">換人</button><a id="hm" class="tb" style="display:none;text-decoration:none;min-height:30px;padding:4px 10px;color:var(--tx)">🏠 字母選單</a><span id="sy"></span></div>
 <div class="tabs" id="tabs"></div><div id="main"></div>
 <div class="ov" id="ov"><div><b style="font:700 1.2rem Poppins">請輸入你的資料</b>
@@ -204,16 +204,16 @@ function esq(t){return String(t).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
 let SP=null;
 function spellQ(w){const word=w.w,n=word.length;
  const edit=[...word].map((c,i)=>i>0&&/[a-z]/i.test(c));
- SP={w,word,n,edit,L:[...word].map((c,i)=>edit[i]?'':c),st:[],cv:[],sel:edit.indexOf(true),done:false,busy:0,tm:null,mode:ls.get('vm:sm')||(matchMedia('(pointer:coarse)').matches?'write':'kb')};
+ SP={w,word,n,edit,L:[...word].map((c,i)=>edit[i]?'':c),st:[],cv:[],sel:edit.indexOf(true),done:false,busy:0,tm:null,ti:null,lock:0,mode:ls.get('vm:sm')||(matchMedia('(pointer:coarse)').matches?'write':'kb')};
  const kb=['abcdefghijklm','nopqrstuvwxyz'].map((r,k)=>'<div class="kr">'+[...r].map(c=>`<button class="kk" data-k="${c}">${c}</button>`).join('')+(k?'<button class="kk wd" data-k="⌫">⌫</button>':'')+'</div>').join('');
- $('qa').innerHTML=`<div class="qc"><div class="sph"><span class="qs">(${esc(w.p)}) ${esc(w.d)}</span><button class="sp" id="spb">🔊 聽聽看</button></div>
+ $('qa').innerHTML=`<div class="qc"><div class="spt">⏱ <b id="spt">15</b> 秒<div class="tbar"><div id="stb" style="width:100%;background:#4ECDC4"></div></div></div><div class="sph"><span class="qs">(${esc(w.p)}) ${esc(w.d)}</span><button class="sp" id="spb">🔊 聽聽看</button></div>
  <div class="mt"><button class="tg" data-m="write">✍️ 手寫</button><button class="tg" data-m="kb">⌨️ 點選字母</button></div>
  <div class="bxs" id="sbx"></div><div class="ph" id="ph"></div>
  <div class="kbd" id="kbd">${kb}</div>
  <div class="acts"><button class="go2" id="sclr">全部擦掉</button><button class="go2" id="sans">👀 看答案</button><button class="go" id="sb">送出</button></div></div>`;
- $('spb').onclick=()=>speak(word);
+ $('spb').onclick=()=>speak(word);spTimer(SP);
  document.querySelectorAll('.tg').forEach(b=>b.onclick=()=>{SP.mode=b.dataset.m;ls.set('vm:sm',SP.mode);spView()});
- $('kbd').onclick=e=>{const k=e.target.closest('.kk');if(!k||SP.done)return;if(k.dataset.k==='⌫')spDel();else spPut(k.dataset.k)};
+ $('kbd').onclick=e=>{const k=e.target.closest('.kk');if(!k||SP.done||SP.lock)return;if(k.dataset.k==='⌫')spDel();else spPut(k.dataset.k)};
  $('sb').onclick=spSubmit;$('sclr').onclick=spClear;$('sans').onclick=()=>spSubmit(true);
  spBuild();spView()}
 function spBuild(){const q=$('sbx');q.innerHTML='';
@@ -226,11 +226,11 @@ function spCanvas(i){const cv=SP.cv[i];let ctx=null,st=null,t0=0;
  const size=()=>{const r=cv.getBoundingClientRect();if(!r.width)return false;const d=window.devicePixelRatio||1;cv.width=r.width*d;cv.height=r.height*d;ctx=cv.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.lineWidth=6;ctx.lineCap=ctx.lineJoin='round';ctx.strokeStyle='#263238';return true};
  const pt=e=>{const r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top,Math.round(performance.now()-t0)]};
  cv.style.touchAction='none';
- cv.onpointerdown=e=>{if(SP.done||SP.busy)return;if(!ctx&&!size())return;clearTimeout(SP.tm);SP.sel=i;
+ cv.onpointerdown=e=>{if(SP.done||SP.lock)return;if(!ctx&&!size())return;clearTimeout(SP.tm);SP.sel=i;
   if(SP.L[i]){SP.L[i]='';SP.st[i]=null;ctx.clearRect(0,0,cv.width,cv.height)}
   if(!SP.st[i])t0=performance.now();cv.setPointerCapture(e.pointerId);const p=pt(e);st=[[p[0]],[p[1]],[p[2]]];ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(p[0]+.1,p[1]+.1);ctx.stroke();spMark()};
  cv.onpointermove=e=>{if(!st)return;const p=pt(e);st[0].push(p[0]);st[1].push(p[1]);st[2].push(p[2]);ctx.lineTo(p[0],p[1]);ctx.stroke();ctx.beginPath();ctx.moveTo(p[0],p[1])};
- const up=()=>{if(!st)return;(SP.st[i]=SP.st[i]||[]).push(st);st=null;clearTimeout(SP.tm);const me=SP;me.tm=setTimeout(()=>spRecog(me,i),900)};
+ const up=()=>{if(!st)return;(SP.st[i]=SP.st[i]||[]).push(st);st=null;clearTimeout(SP.tm);const me=SP;me.tm=setTimeout(()=>spRecog(me,i),300)};
  cv.onpointerup=cv.onpointercancel=up;
  cv.clear=()=>{if(ctx)ctx.clearRect(0,0,cv.width,cv.height)}}
 function spMark(){document.querySelectorAll('#sbx .wc').forEach(d=>d.classList.toggle('on',!SP.done&&+d.dataset.i===SP.sel))}
@@ -248,24 +248,28 @@ function spView(){if(!SP||!$('sbx'))return;
  document.querySelectorAll('.tg').forEach(b=>b.classList.toggle('act',b.dataset.m===SP.mode));
  spMark();
  $('kbd').style.display=SP.done?'none':'';
- $('ph').textContent=SP.busy?'辨識中…':SP.done?'':(SP.mode==='write'?'直接在格子裡寫字母，寫完停一下會自動辨識；辨識錯了就點格子，再按下面的字母鍵修正。':'點方格，再按字母。寫好按「送出」。');
+ $('ph').textContent=SP.busy?'辨識中…':SP.done?'':(SP.mode==='write'?'直接在格子裡寫字母，寫完會立刻辨識並顯示在格子下方；辨識錯了就點格子，再按下面的字母鍵修正。':'點方格，再按字母。寫好按「送出」。');
  $('sb').disabled=SP.done;$('sans').disabled=SP.done}
-async function spRecog(me,i){if(SP!==me||me.done||!me.st[i]||!me.st[i].length)return;const strokes=me.st[i],cv=me.cv[i];me.busy=1;spView();
+async function spRecog(me,i){if(SP!==me||me.done||!me.st[i]||!me.st[i].length)return;const strokes=me.st[i],cv=me.cv[i];me.busy++;spView();
  let ch='?';
- try{const ac=new AbortController(),tk=setTimeout(()=>ac.abort(),5000);
+ try{const ac=new AbortController(),tk=setTimeout(()=>ac.abort(),3000);
   const r=await fetch('https://inputtools.google.com/request?itc=en-t-i0-handwrit&app=vocabulary',{method:'POST',signal:ac.signal,headers:{'Content-Type':'application/json'},
    body:JSON.stringify({options:'enable_pre_space',requests:[{writing_guide:{writing_area_width:cv.clientWidth,writing_area_height:cv.clientHeight},ink:strokes,language:'en'}]})});
   clearTimeout(tk);const j=await r.json();const cand=(j[1]&&j[1][0]&&j[1][0][1])||[];
   const hit=cand.map(x=>String(x).trim()[0]).find(x=>x&&/[a-z]/i.test(x));if(hit)ch=hit.toLowerCase()}catch(e){}
- if(SP!==me)return;me.busy=0;if(me.done)return;
- me.L[i]=ch;me.sel=ch==='?'?i:spNext(i);spView()}
-function spSubmit(giveUp){if(!SP||SP.done)return;const m=SP;
- if(giveUp!==true&&m.edit.some((e,i)=>e&&(!m.L[i]||m.L[i]==='?'))){const h=$('ph');h.textContent='還有空格或「？」，請先填好（點格子再用下面的字母鍵修正）';h.style.color='#c62828';setTimeout(()=>{h.style.color=''},2500);return}
+ me.busy=Math.max(0,me.busy-1);if(SP!==me||me.done)return;
+ me.L[i]=ch;if(me.sel===i||!me.L[me.sel])me.sel=ch==='?'?i:spNext(i);spView()}
+function spTimer(me){const T=15000,t0=Date.now();me.ti=setInterval(()=>{if(SP!==me||me.done||tab!=='spell'||!$('spt')){clearInterval(me.ti);return}
+ const left=Math.max(0,T-(Date.now()-t0));$('spt').textContent=Math.ceil(left/1000);const b=$('stb');b.style.width=(left/T*100)+'%';b.style.background=left<=5000?'#ef5350':'#4ECDC4';
+ if(left<=0){clearInterval(me.ti);me.lock=1;clearTimeout(me.tm);me.edit.forEach((e,i)=>{if(e&&me.st[i]&&me.st[i].length&&!me.L[i])spRecog(me,i)});
+  let n=0;const w=setInterval(()=>{if(SP!==me||me.done){clearInterval(w);return}if(me.busy<=0||++n>25){clearInterval(w);spSubmit('t')}},120)}},100)}
+function spSubmit(giveUp){if(!SP||SP.done)return;const m=SP;clearInterval(m.ti);
+ if(giveUp!==true&&giveUp!=='t'&&m.edit.some((e,i)=>e&&(!m.L[i]||m.L[i]==='?'))){const h=$('ph');h.textContent='還有空格或「？」，請先填好（點格子再用下面的字母鍵修正）';h.style.color='#c62828';setTimeout(()=>{h.style.color=''},2500);return}
  clearTimeout(m.tm);m.done=true;const ok=giveUp!==true&&m.L.join('').toLowerCase()===m.word.toLowerCase();
- spView();if(!ok){$('sbx').insertAdjacentHTML('afterend',`<div class="ans">正確拼法：<b>${esc(m.word)}</b></div>`)}
+ spView();if(!ok){$('sbx').insertAdjacentHTML('afterend',`<div class="ans">${giveUp==='t'?'⏰ 時間到！　':''}正確拼法：<b>${esc(m.word)}</b></div>`)}
  ans('spell',m.w,ok);setTimeout(()=>play('spell'),ok?1500:2800)}
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&tab==='cloze'){const n=$('nx');if(n){n.click();e.preventDefault();return}}
- if(!SP||SP.done||tab!=='spell'||!$('sbx')||e.ctrlKey||e.metaKey||e.altKey)return;
+ if(!SP||SP.done||SP.lock||tab!=='spell'||!$('sbx')||e.ctrlKey||e.metaKey||e.altKey)return;
  if(/^[a-zA-Z]$/.test(e.key)){spPut(e.key.toLowerCase());e.preventDefault()}else if(e.key==='Backspace'){spDel();e.preventDefault()}else if(e.key==='Enter'){spSubmit();e.preventDefault()}});
 
 /* ---------- 配對遊戲 ---------- */
